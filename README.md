@@ -7,7 +7,7 @@ A small CLI app to log daily habit completions from Todoist and produce a mornin
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env  # fill values
-export PYTHONPATH=$PWD/src
-python scripts/simulate.py
-python scripts/nightly.py
-python scripts/report.py
+export PYTHONPATH=$PWD
+python simulate.py
+python nightly.py
+python report.py
