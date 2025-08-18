@@ -1,0 +1,26 @@
+# Core HTTP + API requests
+requests>=2.31.0
+
+# Timezone support (Python 3.9+ includes zoneinfo, but backports available if needed)
+tzdata>=2024.1
+
+# For viewing DB tables nicely (optional, but handy if you use the show_tables function)
+pandas>=2.2.2
+
+# Email formatting
+email-validator>=2.1.1  # optional, for validating email addresses
+
+zoneinfo>=2024.1  # if using Python < 3.9, otherwise not needed
+
+# For sending email via SMTP securely (part of Python stdlib, no extra needed)
+# smtplib and email.message are built-in
+
+# If you plan to use Twilio's REST API instead of raw requests (optional):
+# twilio>=9.0.0
+
+# For database management (SQLite is built-in, but for others like PostgreSQL or MySQL, install appropriate drivers)
+pandas>=2.2.2
+
+#code for installing requirements: pip install -r requirements.txt
+
+# code to install and use latest versions of python: pip install python --upgrade
