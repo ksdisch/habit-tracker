@@ -8,6 +8,10 @@ on:
     # - 3:30 AM during Central Standard Time (CST)
     - cron: "30 9 * * *"
 
+
+  # Add this to enable manual runs from the Actions tab
+  workflow_dispatch:
+
 # This section defines WHAT the workflow does
 # The 'jobs' keyword contains all the individual jobs that the workflow will execute.
 jobs:
