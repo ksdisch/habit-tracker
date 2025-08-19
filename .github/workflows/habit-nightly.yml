@@ -1,0 +1,7 @@
+on:
+  schedule:
+    # This cron job runs at 9:30 UTC every day.
+    # For Chicago (Central Time), this corresponds to:
+    # - 4:30 AM during Central Daylight Time (CDT)
+    # - 3:30 AM during Central Standard Time (CST)
+    - cron: "30 9 * * *"
