@@ -1,0 +1,84 @@
+# This workflow is dedicated to generating and delivering a daily habit report.
+# It is designed to run in the morning, after the nightly logging workflow has completed.
+
+# The 'on' keyword defines the triggers that will cause the workflow to run.
+on:
+  # 'schedule' specifies that this workflow will run on a recurring schedule.
+  schedule:
+    # This cron job runs at 13:00 UTC every day.
+    # For Chicago (Central Time), this is 8:00 AM during CDT or 7:00 AM during CST.
+    # It runs well after the nightly job to ensure yesterday's data is fully logged.
+    - cron: "0 13 * * *"
+
+  # 'workflow_dispatch' allows you to manually run this workflow from the Actions tab on GitHub.
+  # This is useful for testing the report generation without waiting for the schedule.
+  workflow_dispatch:
+
+# The 'jobs' keyword contains all the individual jobs that the workflow will execute.
+jobs:
+  # 'morning-report' is the unique identifier for this job.
+  morning-report:
+    # 'runs-on' specifies the type of virtual machine (runner) to run the job on.
+    runs-on: ubuntu-latest
+
+    # The 'env' block sets environment variables available to all steps in this job.
+    env:
+      # Sets the script's operating mode, primarily for consistency.
+      MODE: "LIVE"
+      # Securely accesses the Todoist API token, in case the report script needs it.
+      TODOIST_TOKEN: ${{ secrets.TODOIST_TOKEN }}
+      # Sets the timezone, which is crucial for correctly reporting on "yesterday's" habits.
+      TIMEZONE: "America/Chicago"
+
+    # The 'steps' keyword lists the sequence of tasks that the job will run.
+    steps:
+      # Step 1: Check out the repository's code.
+      - name: Check out repo
+        # This action downloads a copy of your repository to the runner.
+        # This is essential to get access to your Python scripts and the 'habits.db' file.
+        uses: actions/checkout@v3
+
+      # Step 2: Set up the Python environment.
+      - name: Set up Python
+        # This action installs a specific version of Python on the runner.
+        uses: actions/setup-python@v4
+        # 'with' is used to provide input parameters to an action.
+        with:
+          # Specifies the exact version of Python to install.
+          python-version: "3.10"
+
+      # Step 3: Install the necessary Python packages.
+      - name: Install requirements
+        # This command uses pip to install all libraries listed in the requirements.txt file.
+        run: pip install -r requirements.txt
+
+      # Step 4: Run the Python script that generates the habit report.
+      - name: Generate morning report
+        # The 'id' allows other steps to reference the outputs of this step.
+        id: generate
+        # This command executes the report script. The script's output (the report text)
+        # will be printed to the logs and can be captured for use in later steps.
+        run: python report.py
+
+      # --- OPTIONAL STEP: Email the Report ---
+      # Uncomment the following step to have the report emailed to you automatically.
+      # You must first set up SMTP_USERNAME and SMTP_PASSWORD in your repository secrets.
+      - name: Email report
+        uses: dawidd6/action-send-mail@v6
+        with:
+          # SMTP server details for your email provider (e.g., smtp.gmail.com).
+          server_address: smtp.gmail.com
+          server_port: 587
+          # Your email login credentials, stored securely.
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          # The subject line of the email.
+          subject: "Daily Habit Report for {{ aDate }}" # 'aDate' is a default context variable.
+          # The recipient's email address.
+          to: "your.email@example.com"
+          # The sender's name and email address.
+          from: "GitHub Actions Reporter <your.email@example.com>"
+          # The body of the email, using the output from the 'generate' step.
+          # Note: Your report.py script must be modified to set this output.
+          # See the action's documentation for details on setting step outputs.
+          body: ${{ steps.generate.outputs.report }}
