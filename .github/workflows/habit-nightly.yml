@@ -5,3 +5,30 @@ on:
     # - 4:30 AM during Central Daylight Time (CDT)
     # - 3:30 AM during Central Standard Time (CST)
     - cron: "30 9 * * *"
+
+# This section defines WHAT the workflow does
+jobs:
+  nightly-log:
+    runs-on: ubuntu-latest
+    
+    env:
+      MODE: "LIVE"
+      TODOIST_TOKEN: ${{ secrets.TODOIST_TOKEN }}
+      TIMEZONE: "America/Chicago" # adjust if not in Central
+      PROJECT_NAME: "Next Actions" # Todoist project name
+      SECTION_NAME: "Next Recurring Actions" # Todoist section name
+      CUTOFF_HOUR: "3"
+      
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+  
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+        
