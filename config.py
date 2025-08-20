@@ -7,7 +7,7 @@ load_dotenv()
 
 @dataclass(frozen=True)
 class Settings:
-    MODE: str = os.getenv("MODE", "MOCK")  # "MOCK" or "LIVE"
+    MODE: str = os.getenv("MODE", "LIVE")  # "MOCK" or "LIVE"
     TIMEZONE: str = os.getenv("TIMEZONE", "America/Chicago")
     CUTOFF_HOUR: int = int(os.getenv("CUTOFF_HOUR", "3"))
     DB_PATH: str = os.getenv("DB_PATH", "habits.db")
