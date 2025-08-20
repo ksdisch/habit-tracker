@@ -63,8 +63,8 @@ jobs:
       # --- OPTIONAL STEP: Email the Report ---
       # Uncomment the following step to have the report emailed to you automatically.
       # You must first set up SMTP_USERNAME and SMTP_PASSWORD in your repository secrets.
-      - name: Email report
-        uses: dawidd6/action-send-mail@v6
+      - name: Email report 
+        uses: dawidd6/action-send-mail@v6 # A popular action for sending emails.
         with:
           # SMTP server details for your email provider (e.g., smtp.gmail.com).
           server_address: smtp.gmail.com
