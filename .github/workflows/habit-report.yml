@@ -58,8 +58,8 @@ jobs:
         id: generate
         # This command executes the report script. The script's output (the report text)
         # will be printed to the logs and can be captured for use in later steps.
-        run: python report.py
-
+        # run: python report.py
+        run: python scripts_report.py
       # --- OPTIONAL STEP: Email the Report ---
       # Uncomment the following step to have the report emailed to you automatically.
       # You must first set up SMTP_USERNAME and SMTP_PASSWORD in your repository secrets.

@@ -61,8 +61,8 @@ jobs:
       # This step executes your main Python script.
       - name: Run nightly habit log
         # This command tells the shell to use the Python interpreter to run your script.
-        run: python main.py
-        
+        # run: python main.py
+        run: python scripts_nightly.py
       # This final step commits the updated database file back to the repository.
       - name: Commit updated log
         # The '|' indicates that the 'run' command will contain multiple lines of script.
