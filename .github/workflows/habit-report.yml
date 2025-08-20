@@ -75,9 +75,9 @@ jobs:
           # The subject line of the email.
           subject: "Daily Habit Report for {{ aDate }}" # 'aDate' is a default context variable.
           # The recipient's email address.
-          to: "your.email@example.com"
+          to: "kyledisch@icloud.com"
           # The sender's name and email address.
-          from: "GitHub Actions Reporter <your.email@example.com>"
+          from: "GitHub Actions Reporter Kyle Disch (dischk47@gmail.com)"
           # The body of the email, using the output from the 'generate' step.
           # Note: Your report.py script must be modified to set this output.
           # See the action's documentation for details on setting step outputs.
