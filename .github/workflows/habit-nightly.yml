@@ -79,7 +79,8 @@ jobs:
           git config --local user.email "actions@github.com"
           
           # Stages the database file, preparing it to be committed.
-          git add habits.db
+          if [ -f habits.db ]; then git add habits.db; fi
+          # git add habits.db
           
           # Commits the file with a message. If there are no changes, this fails.
           # The '||' means the next command only runs if the first one fails.
