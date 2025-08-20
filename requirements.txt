@@ -21,6 +21,10 @@ email-validator>=2.1.1  # optional, for validating email addresses
 # For database management (SQLite is built-in, but for others like PostgreSQL or MySQL, install appropriate drivers)
 pandas>=2.2.2
 
+# For environment variable management (optional, but useful for local development)
+# python-dotenv is a common choice, but you can also use built-in os.environ
+python-dotenv
+
 #code for installing requirements: pip install -r requirements.txt
 
 # code to install and use latest versions of python: pip install python --upgrade
