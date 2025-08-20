@@ -1,9 +1,9 @@
 from __future__ import annotations
 import datetime as dt
-from .config import SETTINGS
-from .time_utils import ledger_date_with_cutoff, day_bounds_iso
-from .db import connect, upsert_habit, write_log
-from .todoist_api import get_project_id, get_section_id, get_recurring_tasks, completed_on_date
+from config import SETTINGS
+from time_utils import ledger_date_with_cutoff, day_bounds_iso
+from db import connect, upsert_habit, write_log
+from todoist_api import get_project_id, get_section_id, get_recurring_tasks, completed_on_date
 
 def nightly_live() -> None:
     day = ledger_date_with_cutoff()

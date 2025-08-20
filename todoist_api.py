@@ -1,6 +1,6 @@
 from __future__ import annotations
 import time, requests
-from .config import SETTINGS
+from config import SETTINGS
 
 API = "https://api.todoist.com"
 SESSION = requests.Session()
