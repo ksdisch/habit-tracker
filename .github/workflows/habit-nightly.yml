@@ -63,6 +63,11 @@ jobs:
         # This command tells the shell to use the Python interpreter to run your script.
         # run: python main.py
         run: python scripts_nightly.py
+
+      # ADD THIS NEW STEP FOR DEBUGGING
+      - name: List files in the directory
+        run: ls -R                 
+        
       # This final step commits the updated database file back to the repository.
       - name: Commit updated log
         # The '|' indicates that the 'run' command will contain multiple lines of script.
