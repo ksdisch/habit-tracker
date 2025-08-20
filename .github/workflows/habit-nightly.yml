@@ -61,6 +61,11 @@ jobs:
         # This command uses pip to install all libraries listed in the requirements.txt file.
         run: pip install -r requirements.txt
 
+      
+      - name: Display all environment variables
+        run: env
+
+
       # This step executes your main Python script.
       - name: Run nightly habit log
         # This command tells the shell to use the Python interpreter to run your script.
