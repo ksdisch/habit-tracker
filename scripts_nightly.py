@@ -1,6 +1,7 @@
 from __future__ import annotations
 import datetime as dt
 from db import connect, upsert_habit, write_log
+from config import SETTINGS # Add this line
 
 def simulate_past_days(days: int = 7) -> None:
     fake = [("123", "Meditate"), ("456", "Read 15 minutes"), ("789", "Workout")]
@@ -13,4 +14,3 @@ def simulate_past_days(days: int = 7) -> None:
             for j, (task_id, _) in enumerate(fake):
                 did = not ((d.day + j) % 2 == 0)
                 write_log(con, d.isoformat(), task_id, did)
-
