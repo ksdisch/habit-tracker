@@ -1,0 +1,86 @@
+# The 'on' keyword defines the triggers that will cause the workflow to run.
+on:
+  # 'schedule' specifies that this workflow will run on a recurring schedule.
+  schedule:
+    # This cron job runs at 9:30 UTC every day.
+    # For Chicago (Central Time), this corresponds to:
+    # - 4:30 AM during Central Daylight Time (CDT)
+    # - 3:30 AM during Central Standard Time (CST)
+    - cron: "30 9 * * *"
+
+
+  # Add this to enable manual runs from the Actions tab
+  workflow_dispatch:
+
+# This section defines WHAT the workflow does
+# The 'jobs' keyword contains all the individual jobs that the workflow will execute.
+jobs:
+  # 'nightly-log' is the unique identifier for this job. You can name it anything.
+  nightly-log:
+    # 'runs-on' specifies the type of virtual machine (runner) to run the job on.
+    runs-on: ubuntu-latest
+
+    # The 'env' block sets environment variables that are available to all steps in this job.
+    env:
+      # Sets the script's operating mode, e.g., "LIVE" for production, "TEST" for testing.
+      MODE: "LIVE"
+      # Securely accesses the Todoist API token stored in your repository's secrets.
+      TODOIST_TOKEN: ${{ secrets.TODOIST_TOKEN }}
+      # Sets the timezone for date and time calculations.
+      TIMEZONE: "America/Chicago" # adjust if not in Central
+      # Specifies the target Todoist project name for the script.
+      PROJECT_NAME: "Next Actions" # Todoist project name
+      # Specifies the target section within the Todoist project.
+      SECTION_NAME: "Next Recurring Actions" # Todoist section name
+      # Defines the hour (in the specified TIMEZONE) to consider the "end of the day".
+      CUTOFF_HOUR: "3"
+
+    # The 'steps' keyword lists the sequence of tasks that the job will run.
+    steps:
+      # '- name' provides a human-readable name for the step, which appears in logs.
+      - name: Check out repo
+        # 'uses' specifies that this step will run a pre-built action.
+        # 'actions/checkout@v3' is a standard action that downloads your repository's code to the runner.
+        uses: actions/checkout@v3
+
+      # This step sets up the Python environment.
+      - name: Set up Python
+        # 'actions/setup-python@v4' is a standard action to install a specific version of Python.
+        uses: actions/setup-python@v4
+        # 'with' is used to provide input parameters to an action.
+        with:
+          # 'python-version' tells the setup-python action which version of Python to install.
+          python-version: "3.10"
+
+      # This step installs the necessary Python packages.
+      - name: Install requirements
+        # 'run' tells the runner to execute a command in the shell.
+        # This command uses pip to install all libraries listed in the requirements.txt file.
+        run: pip install -r requirements.txt
+
+      # This step executes your main Python script.
+      - name: Run nightly habit log
+        # This command tells the shell to use the Python interpreter to run your script.
+        run: python main.py
+        
+      # This final step commits the updated database file back to the repository.
+      - name: Commit updated log
+        # The '|' indicates that the 'run' command will contain multiple lines of script.
+        run: |
+          # Configures Git with a user name for the commit.
+          git config --local user.name "GitHub Actions"
+          
+          # Configures Git with an email for the commit.
+          git config --local user.email "actions@github.com"
+          
+          # Stages the database file, preparing it to be committed.
+          git add habits.db
+          
+          # Commits the file with a message. If there are no changes, this fails.
+          # The '||' means the next command only runs if the first one fails.
+          # This prevents the workflow from erroring if there's nothing to commit.
+          # '[skip ci]' in the message prevents this commit from triggering the workflow again.
+          git commit -m "Update habit log [skip ci]" || echo "No changes to commit"
+          
+          # Pushes the new commit back to your repository's main branch.
+          git push
