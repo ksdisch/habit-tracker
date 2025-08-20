@@ -17,7 +17,7 @@ env/
 *.pem
 
 # SQLite database
-*.db
+# *.db
 *.sqlite3
 
 # macOS
