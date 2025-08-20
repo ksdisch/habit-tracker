@@ -11,7 +11,7 @@ pandas>=2.2.2
 email-validator>=2.1.1  # optional, for validating email addresses
 
 # zoneinfo>=2024.1  # if using Python < 3.9, otherwise not needed
-
+requests
 # For sending email via SMTP securely (part of Python stdlib, no extra needed)
 # smtplib and email.message are built-in
 
